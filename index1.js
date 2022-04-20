@@ -10,7 +10,7 @@ var map = new AMap.Map('container', {
     rotation: 35,
     center: [119.606, 25.874],
     features: ['bg', 'road'],
-    zoom: 15
+    zoom: 25
 });
 
 map.AmbientLight = new AMap.Lights.AmbientLight([1, 1, 1], 0.5);
@@ -21,32 +21,48 @@ var object3Dlayer = new AMap.Object3DLayer();
 map.add(object3Dlayer);
 
 var meshes = [];
+var texts = [];
 
 // 以不规则棱柱体 Prism 为例，添加至 3DObjectLayer 图层中
 var paths = [
-    // 1#
-    [[119.60554,25.87389],[119.60545,25.87351],[119.60600,25.87336],[119.60691,25.87374]],
-    // 2#
-    [[119.60614,25.87358],[119.60609,25.87333],[119.60672,25.87307],[119.60667,25.87332]],
-    // 3#
-    [[119.60620,25.87385],[119.60624,25.87364],[119.60695,25.87351],[119.60699,25.87372]],
-    // 4#
-    [[119.60637,25.87420],[119.60626,25.87406],[119.60701,25.87386],[119.60690,25.87400]],
-    // 5#
-    [[119.60649,25.87453],[119.60644,25.87430],[119.60713,25.87414],[119.60716,25.87437]],
+    // // 1#
+    // [[119.60554,25.87389],[119.60545,25.87351],[119.60600,25.87336],[119.60691,25.87374]],
+    // // 2#
+    // [[119.60614,25.87358],[119.60609,25.87333],[119.60672,25.87307],[119.60667,25.87332]],
+    // // 3#
+    // [[119.60620,25.87385],[119.60624,25.87364],[119.60695,25.87351],[119.60699,25.87372]],
+    // // 4#
+    // [[119.60637,25.87420],[119.60626,25.87406],[119.60701,25.87386],[119.60690,25.87400]],
+    // // 5#
+    // [[119.60649,25.87453],[119.60644,25.87430],[119.60713,25.87414],[119.60716,25.87437]],
+    [
+        [119.60555,25.87389],[119.60545,25.87351],[119.60600,25.87336],[119.60611,25.87366]
+    ],
+    [
+        [119.60614,25.87358],[119.60609,25.87333],[119.60684,25.87307],[119.60691,25.87332]
+    ],
+    [
+        [119.60631,25.87385],[119.60620,25.87364],[119.60687,25.87351],[119.60698,25.87372]
+    ],
+    [
+        [119.60637,25.87418],[119.60626,25.87402],[119.60701,25.87386],[119.60704,25.87400]
+    ],
+    [
+        [119.60649,25.87453],[119.60644,25.87430],[119.60713,25.87414],[119.60716,25.87437]
+    ]
 ];
 
 // Object3D.Mesh 的 color 分别是[r, g, b, a]，每个分量只支持 [0 - 1] 区间，
-var color = [100 / 255, 150 / 255, 230 / 255, 0.9];
-var selectColor = [255 / 255, 245 / 255, 47 / 255, 0.9];
+let color = [145 / 255, 185 / 255, 187 / 255, 0.9];
+let selectColor = [100 / 255, 150 / 255, 230 / 255, 0.9];
 
 function initMesh() {
 
-    paths.forEach(function (path) {
+    paths.forEach(function (path,index) {
         var bounds = path.map(function (p) {
             return new AMap.LngLat(p[0], p[1]);
         });
-
+        drawTextFlag(path[2],`#${index+1}栋`)
         // 创建 Object3D.Mesh 对象
         var mesh = new AMap.Object3D.Mesh();
         meshes.push(mesh);
@@ -63,7 +79,7 @@ function initMesh() {
             var g20 = map.lngLatToGeodeticCoord(lngLat);
             verArr.push([g20.x, g20.y]);
             // 构建顶点-底面顶点
-            vertices.push(g20.x, g20.y, 0);
+            vertices.push(g20.x, g20.y, -100);
             // 构建顶点-顶面顶点
             vertices.push(g20.x, g20.y, -1000);
 
@@ -72,16 +88,16 @@ function initMesh() {
             // 设置顶面顶点颜色
             vertexColors.push.apply(vertexColors, color);
 
-            // // 设置三角形面
-            // var bottomIndex = index * 2;
-            // var topIndex = bottomIndex + 1;
-            // var nextBottomIndex = (bottomIndex + 2) % vertexLength;
-            // var nextTopIndex = (bottomIndex + 3) % vertexLength;
-            //
-            // //侧面三角形1
-            // faces.push(bottomIndex, topIndex, nextTopIndex);
-            // //侧面三角形2
-            // faces.push(bottomIndex, nextTopIndex, nextBottomIndex);
+            // 设置三角形面
+            var bottomIndex = index * 2;
+            var topIndex = bottomIndex + 1;
+            var nextBottomIndex = (bottomIndex + 2) % vertexLength;
+            var nextTopIndex = (bottomIndex + 3) % vertexLength;
+
+            //侧面三角形1
+            faces.push(bottomIndex, topIndex, nextTopIndex);
+            //侧面三角形2
+            faces.push(bottomIndex, nextTopIndex, nextBottomIndex);
         });
 
         // 设置顶面，根据顶点拆分三角形
@@ -93,6 +109,7 @@ function initMesh() {
             faces.push(a * 2 + 1, b * 2 + 1, c * 2 + 1);
         }
 
+        mesh.backOrFront = 'both';
         // 开启透明度支持
         mesh.transparent = true;
 
@@ -178,6 +195,28 @@ function updateInfo(obj) {
 
 function isNil(obj) {
     return obj == undefined;
+}
+
+
+
+function drawTextFlag(path,buildingName ) {
+    let text = new AMap.Text({
+        text:  buildingName,
+        verticalAlign: 'bottom',
+        position: [path[0], path[1]],
+        height: 1010,
+        style: {
+            'background-color': 'transparent',
+            '-webkit-text-stroke': 'white',
+            '-webkit-text-stroke-width': '0.4px',
+            'text-align': 'center',
+            'border': 'none',
+            'color': 'white',
+            'font-size': '16px',
+        }
+    });
+    text.setMap(map);
+    texts.push(text);
 }
 
 initMesh();
