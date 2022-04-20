@@ -54,7 +54,7 @@ var map = new AMap.Map('container', {
     rotation: 35,
     center: [119.606, 25.874],
     features: ['bg', 'road'],
-    zoom: 16
+    zoom: 20
 });
 
 // 添加 Object3DLayer 图层，用于添加 3DObject 对象
