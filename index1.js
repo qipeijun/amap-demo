@@ -5,7 +5,7 @@
  */
 // 创建 3D 底图
 var map = new AMap.Map('container', {
-    viewMode: '3D', // 开启 3D 模式
+    // viewMode: '3D', // 开启 3D 模式
     pitch: 55,
     rotation: 35,
     center: [119.606, 25.874],
@@ -58,7 +58,23 @@ let selectColor = [100 / 255, 150 / 255, 230 / 255, 0.9];
 
 function initMesh() {
 
+    // 画线框
+    paths.forEach(path=>{
+        let polygon = new AMap.Polygon({
+            path: path,
+            strokeColor: "#FF33FF",
+            strokeWeight: 6,
+            strokeOpacity: 0.2,
+            fillOpacity: 0.4,
+            fillColor: '#1791fc',
+            zIndex: 50,
+        })
+
+        map.add(polygon)
+    })
+
     paths.forEach(function (path,index) {
+
         var bounds = path.map(function (p) {
             return new AMap.LngLat(p[0], p[1]);
         });
