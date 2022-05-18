@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto load</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <style>
+      #panorama {
+          width: 1000px;
+          height: 600px;
+          margin: 0 auto;
+      }
+  </style>
+</head>
+<body>
+
+<div id="panorama"></div>
+<script>
+    // pannellum.viewer('panorama', {
+    //     "title": "长乐区",
+    //     "author": "新村小学",
+    //     "type": "equirectangular",
+    //     "panorama": "sechelt.jpeg",
+    //     "autoLoad": true,  // 自动加载
+    //     "autoRotate": -2,  // 自动旋转
+    //     "compass": true,  // 显示指南针
+    //     "northOffset": 247.5,  // 指南针偏移量
+    //     "hotSpotDebug": true,
+    //     "hotSpots": [
+    //         {
+    //             "pitch": 0.9,
+    //             "yaw": -119,
+    //             "type": "info",
+    //             "text": "长乐区2"
+    //         },
+    //         {
+    //             "pitch": 16.11,
+    //             "yaw": -51.70,
+    //             "type": "info",
+    //             "text": "长乐区3"
+    //         },
+    //         // {
+    //         //     "pitch": -34,
+    //         //     "yaw": 37,
+    //         //     "type": "info",
+    //         //     "text": "新村小学"
+    //         // },
+    //         {
+    //             "pitch": -1,
+    //             "yaw": 108,
+    //             "type": "info",
+    //             "text": "这是个光头"
+    //         },
+    //     ]
+    // });
+
+
+    pannellum.viewer('panorama',{
+        // "hotSpotDebug": true,
+        "autoLoad": true,  // 自动加载
+        "autoRotate": -2,  // 自动旋转
+        "default": {
+            "firstScene": "长乐区",
+            "author": "新村小学",
+            "sceneFadeDuration": 1000
+        },
+        "scenes":{
+            "长乐区": {
+                "title": "长乐区",
+                "hfov": 110,
+                "pitch": -3,
+                "yaw": 117,
+                "type": "equirectangular",
+                "panorama": "city.jpeg",
+                "hotSpots": [
+                    {
+                        "pitch": -27,
+                        "yaw": 127,
+                        "text": "新村小学",
+                        "type": "scene",
+                        "sceneId": "新村小学"
+                    }
+                ]
+            },
+
+            "新村小学": {
+                "title": "新村小学",
+                "hfov": 110,
+                "pitch": -3,
+                "yaw": 117,
+                "type": "equirectangular",
+                "panorama": "puydesancy.jpeg",
+                "hotSpots": [
+                    {
+                        "pitch": 0.9,
+                        "yaw": -119,
+                        "text": "教学楼",
+                        "type": "scene",
+                        "sceneId": "教学楼"
+                    },
+                    {
+                        "pitch": 60.94,
+                        "yaw": 43.74,
+                        "text": "长乐区",
+                        "type": "scene",
+                        "sceneId": "长乐区"
+                    }
+                ]
+            },
+
+            "教学楼": {
+                "title": "教学楼",
+                "hfov": 110,
+                "pitch": -3,
+                "yaw": 117,
+                "type": "equirectangular",
+                "panorama": "sechelt.jpeg",
+                "hotSpots": [
+                    {
+                        "pitch": 82.9,
+                        "yaw": -37,
+                        "text": "长乐区",
+                        "type": "scene",
+                        "sceneId": "长乐区"
+                    },
+                    {
+                        "pitch": 16.42,
+                        "yaw": -51.76,
+                        "text": "新村小学",
+                        "type": "scene",
+                        "sceneId": "新村小学"
+                    }
+                ]
+            },
+
+        }
+    })
+
+
+</script>
+
+</body>
+</html>

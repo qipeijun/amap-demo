@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="aframe-master.js"></script>
+  <style>
+    .box{
+        width: 1000px;
+        height: 500px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <a-scene>
+
+    <a-sky src="WechatIMG1242.jpeg" rotation="0 0 0" animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
+           animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade"></a-sky>
+
+    <!--  <a-text value="Puy de Sancy, France" width="2" position="-2.5 0.25 -1.5"-->
+    <!--          rotation="0 5 0"></a-text>-->
+  </a-scene>
+</div>
+
+
+
+</body>
+</html>
